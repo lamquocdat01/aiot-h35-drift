@@ -36,13 +36,13 @@ fig.set_size_inches(6.6, 4.8); fig.tight_layout(); fig.savefig(os.path.join(OUT,
 
 # ---- Figure 2: delay / D* versus alpha (synthetic in-scope nulls)
 xs = np.array([0.05, 1e-3, 1e-6]); al = ["0.05", "0.001", "1e-06"]
-fig, ax = plt.subplots(figsize=(4.8, 3.3))
+fig, ax = plt.subplots(figsize=(4.8, 3.9))
 for k in P["insc"]:
     ax.plot(xs, [P["delay_ratio_by_alpha"][k]["F2_bpi_wlc"][a] for a in al], color="#0969da", lw=1, alpha=0.6, marker="o", ms=2.5)
     ax.plot(xs, [P["delay_ratio_by_alpha"][k]["F1_sn_block"][a] for a in al], color="#8250df", lw=1, alpha=0.6, marker="s", ms=2.5)
 ax.plot(xs, [P["pred_overhead"][a] for a in al], color=INK, lw=1.6, ls="--")
 ax.plot([], [], color="#0969da", marker="o", ms=3, label="F2, 7 null models"); ax.plot([], [], color="#8250df", marker="s", ms=3, label="F1, 7 null models")
-ax.plot([], [], color=INK, ls="--", lw=1.6, label="predicted overhead of F2"); ax.legend(frameon=False, fontsize=7, loc="lower left")
+ax.plot([], [], color=INK, ls="--", lw=1.6, label="predicted overhead of F2"); ax.legend(frameon=False, fontsize=7, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=2)
 ax.axhline(1, color=MUTED, lw=0.8); ax.set_xscale("log"); ax.invert_xaxis(); ax.set_yscale("log")
 ax.set_xlabel(r"nominal level $\alpha$"); ax.set_ylabel(r"mean delay / information bound $D^*$"); ax.grid(color=GRID, lw=0.5)
 fig.tight_layout(); fig.savefig(os.path.join(OUT, "fig2_delay_ratio.pdf")); plt.close(fig)
@@ -61,7 +61,7 @@ axs[0].plot([], [], color="#0969da", label="synthetic (7)"); axs[0].plot([], [],
 fig.tight_layout(); fig.savefig(os.path.join(OUT, "fig4_burnin.pdf")); plt.close(fig)
 
 # ---- Figure 4: false alarm vs delay at alpha = 0.05
-fig, ax = plt.subplots(figsize=(5.4, 3.6))
+fig, ax = plt.subplots(figsize=(7.4, 3.6))
 sty = {"F1": ("#8250df", "s", "F1"), "F2": ("#0969da", "o", "F2"), "B1c": ("#cf222e", "v", r"frozen-LRV CUSUM $\kappa=0.1$"),
        "B1c_k0.5": ("#1a7f37", "D", r"frozen-LRV CUSUM $\kappa=0.5$"), "B1c_hcal": ("#bf8700", "^", "frozen-LRV CUSUM, raised threshold")}
 keys = P["insc"] + [f"AQ_{c}|boot168" for c in CH]
@@ -77,6 +77,6 @@ for k, v in P["oos"].items():
 ax.plot([], [], "D", mfc="white", mec=MUTED, ls="", label="unseen null models (open markers)")
 ax.axvline(0.05, color=INK, lw=0.9, ls="--"); ax.set_xscale("symlog", linthresh=0.005); ax.set_xlim(-0.0002, 0.1)
 ax.set_xlabel("false-alarm probability (UCI: worst of three block lengths)"); ax.set_ylabel(r"mean delay / $D^*$ at $\alpha=0.05$")
-ax.legend(frameon=False, fontsize=7, loc="upper right"); ax.grid(color=GRID, lw=0.5)
+ax.legend(frameon=False, fontsize=7, loc="center left", bbox_to_anchor=(1.02, 0.5)); ax.grid(color=GRID, lw=0.5)
 fig.tight_layout(); fig.savefig(os.path.join(OUT, "fig3_fa_delay.pdf")); plt.close(fig)
 print("figs ok")

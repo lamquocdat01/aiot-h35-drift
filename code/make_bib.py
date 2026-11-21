@@ -19,5 +19,23 @@ def fix(m):
 
 
 s = re.sub(r"@\w+\{[^@]*?\n\}", fix, s, flags=re.S)
+
+# F3/H5: protect capitals from the style's lower-casing, fix HTML entities and DataCite author split; drop "none" issue numbers.
+FIXES = [
+    ("M\\&amp;V cascade for LNG", "{M\\&V} cascade for {LNG}"),
+    ("in Korea's national", "in {Korea}'s national"),
+    ("{W-UDDR: A Unified Framework for Automated Drift Detection in IoT-based Air Quality Monitoring Systems}",
+     "{{W-UDDR}: A Unified Framework for Automated Drift Detection in {IoT}-based Air Quality Monitoring Systems}"),
+    ("Time-uniform Chernoff bounds", "Time-uniform {Chernoff} bounds"),
+    ("delay time in page's sequential", "delay time in {Page}'s sequential"),
+    ("{Page's sequential procedure", "{{Page}'s sequential procedure"),
+    ("{SEQUENTIAL MONITORING OF CHANGES IN DYNAMIC LINEAR MODELS, APPLIED TO THE U.S. HOUSING MARKET}",
+     "{Sequential monitoring of changes in dynamic linear models, applied to the {U.S.} housing market}"),
+    ("author = {Vito, Saverio}", "author = {De Vito, Saverio}"),
+]
+for a, b in FIXES:
+    assert a in s, a
+    s = s.replace(a, b)
+s = re.sub(r"\n\s*number = \{none\},", "", s)
 open(sys.argv[2], "w", encoding="utf-8").write(s)
 print("bib ok", s.count("howpublished"))
