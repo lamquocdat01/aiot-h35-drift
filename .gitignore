@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+# secrets
+.env
+*.env
+# raw data are never committed (see README, code/get_data.py)
+data/
+*.csv
+*.zip
+*.dat
+*.gz
+*.xlsx
+# working material kept out of the public repository
+manuscript/
+lit/
+prompts/
+*.bak*

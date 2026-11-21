@@ -1,0 +1,2 @@
+# keep the registered files byte-exact so their SHA-256 can be checked on any platform
+prereg/** -text
