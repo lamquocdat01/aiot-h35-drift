@@ -2,7 +2,7 @@
 
 Code, pre-registration and derived numbers for the manuscript
 
-> **Actual versus nominal false-alarm rates of drift monitors for low-cost gas sensors, measured against a reference analyzer** (Dat Lam Quoc, FPT University; under review).
+> **Actual versus nominal false-alarm rates of drift monitors for low-cost gas sensors, measured against a reference analyzer** (Dat Lam Quoc, Truong Nguyen Xuan, Quang Le Nhut Thanh, Trung Lam Van, Dung Le Trung and Loi Truong Nguyen Thang; FPT School of Business and Technology, FPT University; under review).
 
 The study measures the actual probability that sequential drift monitors raise a false recalibration alarm on calibration residuals of low-cost gas sensors with a co-located reference analyzer (UCI Air Quality), separates the effect of the daily cycle from that of autocorrelation, and compares corrections (self-normalised blocks, an adaptive block plug-in monitor, a frozen long-run-variance CUSUM) under a pre-registered protocol.
 
@@ -73,7 +73,7 @@ Seeds: 20261121–25 (main), 20261200–04 (threshold calibration, E7), 20261300
 Literature-screening tools used while planning the study (queries to OpenAlex, Crossref and DataCite) are not part of this repository; they were removed from the whole history because they are not needed to reproduce any result. `code/check_render.py` and `code/make_bib.py` support the manuscript build only.
 
 ## Use of generative AI
-The code was written and run with Claude Opus 5.5 (Anthropic) via Claude Code, under the author's direction; see the manuscript's Methods and Acknowledgements.
+The code was written and run with Claude Opus 5.5 (Anthropic) via Claude Code, under the authors' direction; see the manuscript's Methods and Acknowledgements.
 
 ## Licence and citation
 Code: MIT (`LICENSE`). The datasets keep their own licences. Please cite the manuscript; `CITATION.cff` describes this repository.
