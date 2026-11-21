@@ -177,7 +177,7 @@
   0.7117,
   0.7332
  ],
- "branch": "Q1-DL co dieu kien (E) + Gauss; S2 quyet",
+ "branch": "Q2 - MST (S2 chot 21-11)",
  "Q0_deseason_eprocess": [
   0.9545,
   0.9445,
@@ -265,5 +265,42 @@
   0.1397
  ],
  "C1_E3_F2_FA_max_grid": 0.0065,
- "C1_verdict": "H1 PASS, H2 PASS, H3 PASS, H6 FAIL, H7 FAIL"
+ "C1_verdict": "H1 PASS, H2 PASS, H3 PASS, H6 FAIL, H7 FAIL",
+ "E7_hcal": {
+  "0.05": 5.9,
+  "0.001": 15.4
+ },
+ "E7_F2_FA_max_alpha1e-3": 0.0052,
+ "E7_B1c_k0.5_delay_over_F2_AR0.8_a0.05": 0.703,
+ "E8_Elow_violation_AR0.8_by_n0": {
+  "336": 0.2285,
+  "1000": 0.0945,
+  "3000": 0.011,
+  "10000": 0.0
+ },
+ "E8_F2_FA_1overalpha_AR0.8_by_n0": {
+  "336": 0.065,
+  "1000": 0.035,
+  "3000": 0.021,
+  "10000": 0.025
+ },
+ "S30_AR2_B1c_k0.5_FA": [
+  0.0235,
+  0.0177,
+  0.0311
+ ],
+ "S30_AR2_delay_B1c_F2": [
+  211.1,
+  299.9
+ ],
+ "S30_ARMA22_B1c_k0.5_FA": [
+  0.0155,
+  0.0109,
+  0.0219
+ ],
+ "S30_ARMA22_delay_B1c_F2": [
+  209.8,
+  302.2
+ ],
+ "S30_verdict": "XAC NHAN NGOAI MAU"
 }

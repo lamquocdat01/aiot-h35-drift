@@ -77,6 +77,20 @@ if os.path.exists(os.path.join(R, "c1_e1_syn.json")):
     n["C1_out_longmem_F2_FA"] = s1["longmem"]["F2_bpi_wlc"]["rate_wilson95"]
     n["C1_E3_F2_FA_max_grid"] = max(v["AR1_0.8"]["FA"][0] for k, v in e3.items() if k.startswith("F2"))
     n["C1_verdict"] = "H1 PASS, H2 PASS, H3 PASS, H6 FAIL, H7 FAIL"
-n["branch"] = "Q1-DL co dieu kien (E) + Gauss; S2 quyet" if "Q2_bpi_FA_AR0.95" in n else n["branch"]
+# --- E7/E8/S3-0 additions
+if os.path.exists(os.path.join(R, "c1_e7.json")):
+    e7 = L("c1_e7.json")["result"]; e8 = L("c1_e8.json")["result"]
+    n["E7_hcal"] = {a: e7["calib_" + a]["h"] for a in ("0.05", "0.001")}
+    n["E7_F2_FA_max_alpha1e-3"] = max(v["0.001"]["F2_bpi_wlc"][0] for v in e7["false_alarm"].values())
+    n["E7_B1c_k0.5_delay_over_F2_AR0.8_a0.05"] = round(e7["delay"]["AR1_0.8"]["cond_delay_nu240"]["B1c_k0.5"]["0.05"]["mean_delay"] / e7["delay"]["AR1_0.8"]["cond_delay_nu240"]["F2_bpi_wlc"]["0.05"]["mean_delay"], 3)
+    n["E8_Elow_violation_AR0.8_by_n0"] = {k: v["P_lower_violation"][0] for k, v in e8["AR1_0.8"]["by_n0"].items()}
+    n["E8_F2_FA_1overalpha_AR0.8_by_n0"] = {k: v["F2_FA_A=1/alpha"][0] for k, v in e8["AR1_0.8"]["by_n0"].items()}
+if os.path.exists(os.path.join(R, "s30_oos.json")):
+    s3 = L("s30_oos.json")
+    for k in ("AR2_0.5_0.3", "ARMA22_1.0_-0.3_|_0.4_0.2"):
+        n["S30_" + k.split("_")[0] + "_B1c_k0.5_FA"] = s3[k]["B1c_k0.5"]["FA"]
+        n["S30_" + k.split("_")[0] + "_delay_B1c_F2"] = [s3[k]["B1c_k0.5"]["mean_delay"], s3[k]["F2_bpi_wlc"]["mean_delay"]]
+    n["S30_verdict"] = s3["verdict_primary"]
+n["branch"] = "Q2 - MST (S2 chot 21-11)"
 json.dump(n, open(sys.argv[2], "w", encoding="utf-8"), indent=1)
 print(len(n), "keys")
