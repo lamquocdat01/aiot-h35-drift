@@ -81,7 +81,7 @@ def s2_tilde(gam, n_eff, b):
 
 
 # ------------------------------------------------------------------ monitors
-def bpi_wlc(X, alphas, n0=N0, b=B, g=G, wm=WM, wblocks=None, nmon=None, lag=True, logA_override=None):
+def bpi_wlc(X, alphas, n0=N0, b=B, g=G, wm=WM, wblocks=None, nmon=None, lag=True, logA_override=None, return_st=False):
     """X (R, n0+nmon). returns dict alpha -> alarm time (hours after monitoring start, -1 none)."""
     R, n = X.shape
     nmon = n - n0 if nmon is None else nmon
@@ -109,6 +109,7 @@ def bpi_wlc(X, alphas, n0=N0, b=B, g=G, wm=WM, wblocks=None, nmon=None, lag=True
 
     logP = np.full((R, wm, len(TH)), -np.inf)  # ring buffer of starts
     hist = []                                   # estimator after absorbing data before block l
+    used = []
     absorb(n0)
     st0 = s2_tilde(C / np.maximum(seen - np.arange(PMAX + 1), 1), seen, b)
     for l in range(L):
@@ -119,6 +120,7 @@ def bpi_wlc(X, alphas, n0=N0, b=B, g=G, wm=WM, wblocks=None, nmon=None, lag=True
         # LAGGED estimator: data older than the CUSUM window (round-1 fix: no post-change contamination
         # while a start inside the window is still collecting evidence)
         st = (hist[l - wm] if l >= wm else st0) if lag else hist[l]
+        used.append(st)
         Y = X[:, s:s + b].sum(1)
         z = Y / np.sqrt(b * st)
         inc = z[:, None] * TH - TH ** 2 / 2
@@ -131,6 +133,8 @@ def bpi_wlc(X, alphas, n0=N0, b=B, g=G, wm=WM, wblocks=None, nmon=None, lag=True
             hit = (Mmax >= logA[a]) & (first[a] < 0)
             first[a][hit] = tend
         absorb(s + step)
+    if return_st:
+        return first, np.stack(used, 1)
     return first
 
 
