@@ -74,8 +74,9 @@ def levinson_aic(gam, n_eff):
 
 def s2_tilde(gam, n_eff, b):
     lrv = levinson_aic(gam, n_eff)
-    h = np.arange(1, b)
-    vb = gam[:, 0] + 2 * ((1 - h / b) * gam[:, 1:b]).sum(1)
+    hm = min(b, gam.shape[1])  # 1c Amendment 5: truncate Bartlett at lag PMAX when b-1 > PMAX
+    h = np.arange(1, hm)
+    vb = gam[:, 0] + 2 * ((1 - h / b) * gam[:, 1:hm]).sum(1)
     return (1 + KAPPA) * np.maximum(lrv, vb)
 
 
@@ -94,6 +95,7 @@ def bpi_wlc(X, alphas, n0=N0, b=B, g=G, wm=WM, wblocks=None, nmon=None, lag=True
 
     def absorb(upto):
         nonlocal seen
+        upto = min(upto, n)  # 1c fix: series length not aligned to the block grid (real data)
         if upto <= seen: return
         lo = max(0, seen - PMAX)
         seg = X[:, lo:upto]

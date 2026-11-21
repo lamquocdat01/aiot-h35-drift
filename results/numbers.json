@@ -1,0 +1,269 @@
+{
+ "_note": "S1 numbers, 21-11-2026; [mean, lo95, hi95]",
+ "alpha": 0.05,
+ "A_rule_i_N16_tau_short_lifetimeFDR": [
+  0.2787,
+  0.2676,
+  0.2899
+ ],
+ "A_rule_i_N16_tau_first_lifetimeFDR": [
+  0.2755,
+  0.2631,
+  0.2879
+ ],
+ "A_rule_i_N1_tau_short_lifetimeFDR": [
+  0.0727,
+  0.0678,
+  0.0775
+ ],
+ "A_rule_ii_tau_short_lifetimeFDR": [
+  0.0197,
+  0.0164,
+  0.023
+ ],
+ "A_rule_ii_tau_short_currentFDR": [
+  0.1636,
+  0.1544,
+  0.1729
+ ],
+ "A_rule_iii_tau_max_lifetimeFDR": [
+  0.0104,
+  0.0076,
+  0.0132
+ ],
+ "A_rule_iii_delay_j1_j10": [
+  115.6,
+  129.4
+ ],
+ "A_rule_i_delay_j1_j10": [
+  97.5,
+  97.2
+ ],
+ "A_cexA_lifetimeFDP_tau": 0.09458665266958811,
+ "A_cexB_EZtau": 1.5,
+ "B_null_block24_eprocess": [
+  0.9355,
+  0.9239,
+  0.9455
+ ],
+ "B_null_block24_ctm": [
+  0.8365,
+  0.8196,
+  0.8521
+ ],
+ "B_null_iid_eprocess": [
+  0.0375,
+  0.03,
+  0.0468
+ ],
+ "B_null_iid_ctm": [
+  0.0125,
+  0.0085,
+  0.0184
+ ],
+ "B_bias_cusum_pre_signed": [
+  0.2001,
+  0.0836,
+  0.2543
+ ],
+ "B_dMAE_eproc_pre_vs_sched": [
+  -0.1071,
+  -0.164,
+  -0.0547
+ ],
+ "B_dMAE_eproc_post_vs_sched": [
+  -0.0591,
+  -0.1232,
+  0.0004
+ ],
+ "S1b_a_eproc_deseason": [
+  0.9425,
+  0.9314,
+  0.9519
+ ],
+ "S1b_a_eproc_block24": [
+  0.0035,
+  0.0017,
+  0.0072
+ ],
+ "S1b_a_eproc_whiten_phihat": [
+  0.2305,
+  0.2126,
+  0.2495
+ ],
+ "S1b_a_block24_bootblk168": [
+  0.0325,
+  0.0256,
+  0.0412
+ ],
+ "S1b_a_block48_bootblk168": [
+  0.05,
+  0.0413,
+  0.0604
+ ],
+ "T1_lemma1_grid_max": 0.0,
+ "T1_uci_b24g24_boot24_72_168": [
+  [
+   0.003,
+   0.0014,
+   0.0065
+  ],
+  [
+   0.004,
+   0.002,
+   0.0079
+  ],
+  [
+   0.011,
+   0.0073,
+   0.0166
+  ]
+ ],
+ "T1_uci_b24g0_boot168": [
+  0.095,
+  0.0829,
+  0.1086
+ ],
+ "T1_cex_longmem_g24": [
+  0.1401,
+  0.1334,
+  0.147
+ ],
+ "T1_cex_skew_b1": [
+  0.0675,
+  0.0627,
+  0.0726
+ ],
+ "T2_N16_iv_EsupFDP": [
+  0.0187,
+  0.0158,
+  0.0216
+ ],
+ "T2_N16_iii_EsupFDP": [
+  0.0111,
+  0.0083,
+  0.0139
+ ],
+ "T2_N16_ivb_dynamic_EsupFDP": [
+  0.022,
+  0.019,
+  0.0249
+ ],
+ "T2_N16_delay_j10_iii_iv": [
+  129.4,
+  113.0
+ ],
+ "T2_N4_delay_j10_iii_iv": [
+  124.6,
+  112.6
+ ],
+ "T2_cex_const_gamma_N16": [
+  0.3721,
+  0.3688,
+  0.3754
+ ],
+ "T2_cex_raw_N16": [
+  0.7621,
+  0.7529,
+  0.7714
+ ],
+ "P0_cex_harmonic_N16": [
+  0.0213,
+  0.0174,
+  0.0251
+ ],
+ "P0_cex_raw_N16": [
+  0.7225,
+  0.7117,
+  0.7332
+ ],
+ "branch": "Q1-DL co dieu kien (E) + Gauss; S2 quyet",
+ "Q0_deseason_eprocess": [
+  0.9545,
+  0.9445,
+  0.9628
+ ],
+ "Q0_deseason_ctm": [
+  0.882,
+  0.8671,
+  0.8954
+ ],
+ "Q0_var_explained_hour_profile": 0.124,
+ "Q2_bpi_FA_max_over_nulls": 0.0155,
+ "Q2_bpi_FA_AR0.95": [
+  0.0155,
+  0.0109,
+  0.0219
+ ],
+ "Q2_bpi_FA_B1boot168": [
+  0.0,
+  0.0,
+  0.0019
+ ],
+ "Q2_bpi_delay_ratio_AR0.8_by_alpha": {
+  "0.05": 4.932,
+  "0.001": 2.978,
+  "1e-06": 2.226,
+  "1e-12": 1.768
+ },
+ "Q2_sn_delay_ratio_AR0.8_by_alpha": {
+  "0.05": 12.314,
+  "0.001": 9.339,
+  "1e-06": 8.158,
+  "1e-12": null
+ },
+ "Q2_predicted_overhead_by_alpha": {
+  "0.05": 5.186,
+  "0.001": 3.028,
+  "1e-06": 2.201,
+  "1e-12": 1.788
+ },
+ "Q2_cex_noUnion_AR0.95": [
+  0.083,
+  0.0717,
+  0.0959
+ ],
+ "Q2_cex_longmem": [
+  0.1245,
+  0.1107,
+  0.1397
+ ],
+ "Q2_cex_nonlagged_delay": {
+  "ratio": 4.718,
+  "miss": 0.851
+ },
+ "C1_H2_F2_FA_max_inscope": 0.0155,
+ "C1_H2_F2_FA_max_AQ_boot168": 0.002,
+ "C1_H1_guaranteed_FA_AQ_boot168_min": 0.3691,
+ "C1_H3_F2_ratio_1e-6_inscope_max": 2.367,
+ "C1_H3_pred_overhead_1e-6": 2.201,
+ "C1_B1c_FA_max_inscope": 0.074,
+ "C1_B2c_FA_max_AQ_boot168": 0.635,
+ "C1_delay_ratio_AR0.8_alpha0.05_F2_F1_B1c": [
+  4.932,
+  12.314,
+  2.643
+ ],
+ "C1_ARL0_AR0.8_F2_B1c": [
+  19777.0,
+  13296.6
+ ],
+ "C1_H6_eps_max_p95_AR0.8": 1.011,
+ "C1_H6_P_under_vb_AR0.8": [
+  0.43,
+  0.3996,
+  0.4609
+ ],
+ "C1_H7_R3a_current_FDR": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "C1_out_longmem_F2_FA": [
+  0.1245,
+  0.1107,
+  0.1397
+ ],
+ "C1_E3_F2_FA_max_grid": 0.0065,
+ "C1_verdict": "H1 PASS, H2 PASS, H3 PASS, H6 FAIL, H7 FAIL"
+}

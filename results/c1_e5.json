@@ -1,0 +1,44 @@
+{
+ "experiment": "e5",
+ "result": {
+  "R3a_eBH_reset": {
+   "lifetime_FDR_T": [
+    0.0,
+    -0.0,
+    0.0001
+   ],
+   "E_sup_FDP": [
+    0.0001,
+    -0.0001,
+    0.0003
+   ],
+   "current_FDR_at_tau_short": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mean_recal": 43.23
+  },
+  "R3b_discovery_investing": {
+   "lifetime_FDR_T": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "E_sup_FDP": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "current_FDR_at_tau_short": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mean_recal": 44.08
+  },
+  "note": "iid joint-row bootstrap of batch-1 oos residuals (16 sensors); sample order not confirmed (Amendment 2) -> illustrative only"
+ },
+ "thresholds": {},
+ "runtime_s": 46.2
+}

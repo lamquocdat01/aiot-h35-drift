@@ -57,6 +57,26 @@ if os.path.exists(os.path.join(R, "q2_selfcheck.json")):
     sc = L("q2_selfcheck.json")
     n["Q2_cex_noUnion_AR0.95"] = sc["a1_A=1/alpha|AR0.95"]; n["Q2_cex_longmem"] = sc["a4_longmem"]
     n["Q2_cex_nonlagged_delay"] = sc["b1_nonlagged_estimator"]
+# --- 1c additions
+if os.path.exists(os.path.join(R, "c1_e1_syn.json")):
+    C = lambda f: L(f)["result"]
+    s1, aq, d2, a0, e4, e5, e3 = C("c1_e1_syn.json"), C("c1_e1_aq.json"), C("c1_e2_delay.json"), C("c1_e2_arl0.json"), C("c1_e4.json"), C("c1_e5.json"), C("c1_e3.json")
+    insc = ["AR1_0", "AR1_0.5", "AR1_0.8", "AR1_0.95", "ARMA11_0.8_+0.4", "ARMA11_0.8_-0.5", "ARMA21_1.2_-0.4_+0.3"]
+    n["C1_H2_F2_FA_max_inscope"] = max(s1[k]["F2_bpi_wlc"]["rate_wilson95"][0] for k in insc)
+    n["C1_H2_F2_FA_max_AQ_boot168"] = max(aq[k]["F2_bpi_wlc"]["rate_wilson95"][0] for k in aq if k.endswith("boot168"))
+    n["C1_H1_guaranteed_FA_AQ_boot168_min"] = min(aq[k][m]["rate_wilson95"][1] for k in aq if k.endswith("boot168") for m in ("M3_adwin", "M5_eprocess", "M6_ctm"))
+    n["C1_H3_F2_ratio_1e-6_inscope_max"] = max(d2[k]["cond_delay_nu240"]["F2_bpi_wlc"]["1e-06"]["ratio_to_Dstar"] for k in insc)
+    n["C1_H3_pred_overhead_1e-6"] = d2["AR1_0"]["pred_overhead"]["1e-06"]
+    n["C1_B1c_FA_max_inscope"] = max(s1[k]["B1c_frozen_lrv_cusum"]["rate_wilson95"][0] for k in insc)
+    n["C1_B2c_FA_max_AQ_boot168"] = max(aq[k]["B2c_ar_residual_cusum"]["rate_wilson95"][0] for k in aq if k.endswith("boot168"))
+    n["C1_delay_ratio_AR0.8_alpha0.05_F2_F1_B1c"] = [d2["AR1_0.8"]["cond_delay_nu240"][m]["0.05"]["ratio_to_Dstar"] for m in ("F2_bpi_wlc", "F1_sn_block", "B1c_frozen_lrv_cusum")]
+    n["C1_ARL0_AR0.8_F2_B1c"] = [a0["AR1_0.8"]["F2_bpi_wlc"]["ARL0_lower_bound_mean"], a0["AR1_0.8"]["B1c_frozen_lrv_cusum"]["ARL0_lower_bound_mean"]]
+    n["C1_H6_eps_max_p95_AR0.8"] = e4["AR1_0.8"]["eps_max_p95"]
+    n["C1_H6_P_under_vb_AR0.8"] = e4["AR1_0.8"]["P_any_under_vb"]
+    n["C1_H7_R3a_current_FDR"] = e5["R3a_eBH_reset"]["current_FDR_at_tau_short"]
+    n["C1_out_longmem_F2_FA"] = s1["longmem"]["F2_bpi_wlc"]["rate_wilson95"]
+    n["C1_E3_F2_FA_max_grid"] = max(v["AR1_0.8"]["FA"][0] for k, v in e3.items() if k.startswith("F2"))
+    n["C1_verdict"] = "H1 PASS, H2 PASS, H3 PASS, H6 FAIL, H7 FAIL"
 n["branch"] = "Q1-DL co dieu kien (E) + Gauss; S2 quyet" if "Q2_bpi_FA_AR0.95" in n else n["branch"]
 json.dump(n, open(sys.argv[2], "w", encoding="utf-8"), indent=1)
 print(len(n), "keys")
