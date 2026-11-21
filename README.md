@@ -18,7 +18,7 @@ The study measures the actual probability that sequential drift monitors raise a
 | `results/numbers.json` | Every number used in the manuscript, built from the result files |
 | `results/fig/` | Figures generated from `numbers.json` |
 
-Commit dates in the history are the original dates of work: the pre-registration and each amendment precede the corresponding results. This public repository is a filtered copy of a private working repository (only `code/`, `prereg/`, `results/` were kept); commit hashes therefore differ from the private copy, while file contents and the SHA-256 of the pre-registration are unchanged.
+Commit dates in the history are the original dates of work: the pre-registration and each amendment precede the corresponding results. This public repository is a filtered copy of a private working repository (only `code/`, `prereg/`, `results/` were kept); commit hashes therefore differ from the private copy. In this copy, author metadata were normalised, two commit messages were reworded, and the literature-screening tools were removed from every commit; the pre-registration files, their SHA-256 and the commit dates are unchanged.
 
 ### Checking the pre-registration hash
 `.gitattributes` keeps `prereg/` byte-exact on every platform. Then:
@@ -35,10 +35,9 @@ git show prereg-H35-v1:prereg/PREREG_H35.md | sha256sum      # same hash as regi
 | Intel Berkeley Research Lab | http://db.csail.mit.edu/labdata/labdata.html | no stated licence — not redistributed | exploratory |
 
 ```
-python code/get_data.py <dataset_dir>
-export THS_DATASETS=<dataset_dir>          # Windows: set THS_DATASETS=<dataset_dir>
+python code/get_data.py          # downloads into ./data, which the experiment scripts read by default
 ```
-`get_data.py` was written at release time and has not been run end to end by the author (the original runs used local copies with the same layout).
+For another location: `python code/get_data.py <dataset_dir>` and set the environment variable `THS_DATASETS=<dataset_dir>`. `get_data.py` was added at release; the original runs used local copies with the same layout.
 
 ## Environment
 Python 3.11; `pip install -r requirements.txt` (numpy, scipy, pandas, matplotlib, python-dateutil; pymupdf only for `check_render.py`).
@@ -71,7 +70,7 @@ Runtimes were not recorded systematically; the Monte-Carlo experiments take from
 
 Seeds: 20261121–25 (main), 20261200–04 (threshold calibration, E7), 20261300–04 (out-of-sample, Amendment 7), 20261400+ (reference noise, E9). `results/c1_e3_INVALID_run1.json` is kept for traceability (Amendment 4).
 
-`code/` also contains the literature and venue screening tools used while planning the study (`h35api.py`, `novelty_scan.py`, `make_refs_bib.py`, `verify_refs.py`, `venue_g2.py`, `split_gfa.py`, `build_novelty_csv.py`, `dataset_check.py`); they query OpenAlex, Crossref and DataCite, read an optional API key from a local `.env` that is not part of this repository, and are not needed to reproduce the results.
+Literature-screening tools used while planning the study (queries to OpenAlex, Crossref and DataCite) are not part of this repository; they were removed from the whole history because they are not needed to reproduce any result. `code/check_render.py` and `code/make_bib.py` support the manuscript build only.
 
 ## Use of generative AI
 The code was written and run with Claude Opus 5.5 (Anthropic) via Claude Code, under the author's direction; see the manuscript's Methods and Acknowledgements.

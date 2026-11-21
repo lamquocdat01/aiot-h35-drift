@@ -1,6 +1,7 @@
 """Download the three public datasets into the layout expected by c1_data.py (no data are shipped with this repository).
 
-Usage: python get_data.py <dataset_dir>        then set THS_DATASETS=<dataset_dir> before running the experiments.
+Usage: python get_data.py [dataset_dir]        default: ./data at the repository root, which c1_data.py reads by default;
+       for another location, set THS_DATASETS=<dataset_dir> before running the experiments.
 
 Layout produced:
   <dataset_dir>/UCI_AirQuality/AirQualityUCI.csv     UCI #360 Air Quality (CC BY 4.0)
@@ -47,4 +48,4 @@ def main(root):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data"))

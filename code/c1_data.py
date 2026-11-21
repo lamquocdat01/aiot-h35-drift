@@ -4,7 +4,8 @@ import os, gzip, json
 import numpy as np
 import pandas as pd
 
-DS = os.environ.get("THS_DATASETS", r"D:\THS_Datasets")
+# Dataset root: environment variable THS_DATASETS, else ./data at the repository root (see code/get_data.py).
+DS = os.environ.get("THS_DATASETS", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data"))
 AQ_CSV = os.path.join(DS, "UCI_AirQuality", "AirQualityUCI.csv")
 GAS_DIR = os.path.join(DS, "UCI_GasDrift", "conc")
 INTEL_DIR = os.path.join(DS, "IntelLab")
