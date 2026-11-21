@@ -1,5 +1,6 @@
 """Build results/numbers.json from the S1 result files.  Usage: python -I build_numbers.py <results_dir> <out.json>"""
 import json, sys, os
+import numpy as np
 R = sys.argv[1]
 L = lambda f: json.load(open(os.path.join(R, f), encoding="utf-8"))
 A = L("pilot_A.json"); B = L("pilot_B.json"); D = L("s1b_a_decompose.json")
@@ -92,5 +93,83 @@ if os.path.exists(os.path.join(R, "s30_oos.json")):
         n["S30_" + k.split("_")[0] + "_delay_B1c_F2"] = [s3[k]["B1c_k0.5"]["mean_delay"], s3[k]["F2_bpi_wlc"]["mean_delay"]]
     n["S30_verdict"] = s3["verdict_primary"]
 n["branch"] = "Q2 - MST (S2 chot 21-11)"
+# --- paper block (F2): every number used in the manuscript tables/text
+def _paper():
+    P = {}
+    if not os.path.exists(os.path.join(R, "c1_e1_aq.json")):
+        return None
+    C1 = lambda f: L(f)["result"]
+    aq, syn, d2, a0, e7, e8, e3 = C1("c1_e1_aq.json"), C1("c1_e1_syn.json"), C1("c1_e2_delay.json"), C1("c1_e2_arl0.json"), C1("c1_e7.json"), C1("c1_e8.json"), C1("c1_e3.json")
+    intel = C1("c1_e1_intel.json"); s3 = L("s30_oos.json"); q0 = L("q0_deseason_ctm.json"); sa = L("s1b_a_decompose.json")
+    P["meta"] = L("aq_meta.json")
+    chans = ["CO(GT)", "C6H6(GT)", "NOx(GT)", "NO2(GT)"]; blocks = ["24", "72", "168"]
+    mons = ["M1_cusum", "M2_pagehinkley", "M3_adwin", "M4_repeated_p", "M5_eprocess", "M6_ctm", "F1_sn_block", "F2_bpi_wlc", "B1c_frozen_lrv_cusum", "B2c_ar_residual_cusum"]
+    P["t2"] = {c: {b: {m: aq[f"AQ_{c}|boot{b}"][m]["rate_wilson95"] for m in mons} for b in blocks} for c in chans}
+    g = [P["t2"][c][b][m] for c in chans for b in blocks for m in ("M5_eprocess", "M6_ctm")]
+    P["rq1_guaranteed_range"] = [min(x[0] for x in g), max(x[0] for x in g)]
+    P["rq1_guaranteed_min_lowerCI"] = min(x[1] for x in g)
+    P["rq1_by_block"] = {b: [min(P["t2"][c][b][m][0] for c in chans for m in ("M5_eprocess", "M6_ctm")),
+                             max(P["t2"][c][b][m][0] for c in chans for m in ("M5_eprocess", "M6_ctm"))] for b in blocks}
+    P["rq1_adwin_range"] = [min(P["t2"][c][b]["M3_adwin"][0] for c in chans for b in blocks), max(P["t2"][c][b]["M3_adwin"][0] for c in chans for b in blocks)]
+    ib = [k for k in intel if k.endswith("boot168")]
+    P["intel_guaranteed_frac_lowerCI_gt_alpha"] = round(float(np.mean([min(intel[k]["M5_eprocess"]["rate_wilson95"][1], intel[k]["M6_ctm"]["rate_wilson95"][1]) > 0.05 for k in ib])), 3)
+    P["intel_F2_n_exceed"] = int(sum(intel[k]["F2_bpi_wlc"]["rate_wilson95"][1] > 0.05 for k in ib)); P["intel_n"] = len(ib)
+    P["t3"] = {"raw_block24": q0["raw|block24"], "deseason_block24": q0["deseason|block24"], "iid": q0["raw|iid"],
+               "var_hour_profile": q0["var_explained_by_hour_profile"], "blockmean24_eproc": sa["eprocess_false_alarm"]["2_block24_raw"]["rate_wilson95"],
+               "whiten_phihat_eproc": sa["eprocess_false_alarm"]["3_whiten_phihat_raw"]["rate_wilson95"],
+               "adwin_iid": L("pilot_B.json")["part1_null_audit"]["iid"]["adwin"]["rate_wilson95"]}
+    insc = ["AR1_0", "AR1_0.5", "AR1_0.8", "AR1_0.95", "ARMA11_0.8_+0.4", "ARMA11_0.8_-0.5", "ARMA21_1.2_-0.4_+0.3"]
+    P["insc"] = insc
+    fa = e7["false_alarm"]
+
+    def row(k, src):
+        return {"F1": src[k]["F1_sn_block"]["rate_wilson95"], "F2": fa[k]["0.05"]["F2_bpi_wlc"], "B1c": fa[k]["0.05"]["B1c_k0.1"],
+                "B1c_k0.25": fa[k]["0.05"]["B1c_k0.25"], "B1c_k0.5": fa[k]["0.05"]["B1c_k0.5"], "B1c_hcal": fa[k]["0.05"]["B1c_k0.1_hcal"],
+                "B2c": src[k]["B2c_ar_residual_cusum"]["rate_wilson95"]}
+    P["t4_fa"] = {k: row(k, syn) for k in insc}
+    for c in chans:
+        for b in blocks:
+            P["t4_fa"][f"AQ_{c}|boot{b}"] = row(f"AQ_{c}|boot{b}", aq)
+    dl = e7["delay"]
+    P["t4_delay"] = {k: {"F1": d2[k]["cond_delay_nu240"]["F1_sn_block"]["0.05"], "F2": dl[k]["cond_delay_nu240"]["F2_bpi_wlc"]["0.05"],
+                         "B1c": dl[k]["cond_delay_nu240"]["B1c_k0.1"]["0.05"], "B1c_k0.5": dl[k]["cond_delay_nu240"]["B1c_k0.5"]["0.05"],
+                         "B1c_hcal": dl[k]["cond_delay_nu240"]["B1c_k0.1_hcal"]["0.05"]} for k in insc + [f"AQ_{c}|boot168" for c in chans]}
+    P["t4_arl0"] = {k: {m: a0[k][m] for m in ("F1_sn_block", "F2_bpi_wlc", "B1c_frozen_lrv_cusum", "B2c_ar_residual_cusum", "M5_eprocess")} for k in ["AR1_0.8", "AQ_CO(GT)|boot168"]}
+    P["oos"] = {k: {m: s3[k][m] for m in ("B1c_k0.5", "F2_bpi_wlc")} for k in ("AR2_0.5_0.3", "ARMA22_1.0_-0.3_|_0.4_0.2")}
+    P["oos_uci_B1c_FA_max"] = max(s3[k]["B1c_k0.5"]["FA"][0] for k in s3 if isinstance(s3[k], dict) and k.startswith("AQ_"))
+    P["e7_h"] = {a: e7["calib_" + a]["h"] for a in ("0.05", "0.001")}
+
+    def keep(v, a, fk):
+        return all(fa[x][a][v][0] <= float(a) for x in fk)
+    units = [(k, [k], k) for k in insc] + [(f"AQ_{c}", [f"AQ_{c}|boot{b}" for b in blocks], f"AQ_{c}|boot168") for c in chans]
+    cnt = {}
+    for a in ("0.05", "0.001"):
+        for v in ("F2_bpi_wlc", "B1c_k0.1", "B1c_k0.25", "B1c_k0.5", "B1c_k0.1_hcal"):
+            kp = sum(keep(v, a, fk) for _, fk, _ in units)
+            fs = sum(keep(v, a, fk) and v != "F2_bpi_wlc" and dl[d]["cond_delay_nu240"][v][a]["ci95"][1] < dl[d]["cond_delay_nu240"]["F2_bpi_wlc"][a]["ci95"][0] for _, fk, d in units)
+            rr = [dl[d]["cond_delay_nu240"][v][a]["mean_delay"] / dl[d]["cond_delay_nu240"]["F2_bpi_wlc"][a]["mean_delay"] for _, _, d in units]
+            cnt[f"{v}|{a}"] = {"keep": kp, "keep_and_faster": fs, "delay_ratio_range": [round(min(rr), 2), round(max(rr), 2)]}
+    P["e7_counts"] = cnt
+    P["f2_fa_1e-3"] = {k: fa[k]["0.001"]["F2_bpi_wlc"] for k in fa}
+    P["f2_fa_1e-3_n_exceed"] = int(sum(v[1] > 0.001 for v in P["f2_fa_1e-3"].values()))
+    P["out_of_scope"] = {k: {m: syn[k][m]["rate_wilson95"] for m in ("F1_sn_block", "F2_bpi_wlc", "B1c_frozen_lrv_cusum", "M5_eprocess")} for k in ("AR0.8_t5", "AR0.8_skew", "longmem")}
+    P["e8"] = {k: {n0: {"viol": v["P_lower_violation"], "fa_1overalpha": v["F2_FA_A=1/alpha"], "eps95": v["eps_max_p95"]} for n0, v in e8[k]["by_n0"].items()} for k in e8}
+    P["delay_ratio_by_alpha"] = {k: {m: {a: d2[k]["cond_delay_nu240"][m][a]["ratio_to_Dstar"] for a in ("0.05", "0.001", "1e-06")} for m in ("F1_sn_block", "F2_bpi_wlc")} for k in insc}
+    P["pred_overhead"] = d2["AR1_0"]["pred_overhead"]
+    P["e3_F2_fa_max"] = max(v["AR1_0.8"]["FA"][0] for k, v in e3.items() if k.startswith("F2"))
+    keys11 = insc + [f"AQ_{c}|boot168" for c in chans]
+    cmp = [d2[k]["cond_delay_nu240"]["F2_bpi_wlc"][a]["mean_delay"] < d2[k]["cond_delay_nu240"]["F1_sn_block"][a]["mean_delay"] for k in keys11 for a in ("0.05", "0.001", "1e-06")]
+    P["h3_f2_faster"] = [int(sum(cmp)), len(cmp)]
+    P["h_iid_blocks_a05"] = round(L("c1_e7.json")["result"]["h_iid"]["0.05"], 2)
+    if os.path.exists(os.path.join(R, "e9_ref_noise.json")):
+        e9 = L("e9_ref_noise.json")
+        P["e9"] = {k: v for k, v in e9.items() if "|" in k}
+    return P
+
+
+_pp = _paper()
+if _pp is not None:
+    n["paper"] = _pp
+
 json.dump(n, open(sys.argv[2], "w", encoding="utf-8"), indent=1)
 print(len(n), "keys")

@@ -1,0 +1,54 @@
+{
+ "CO(GT)": {
+  "sensor": "PT08.S1(CO)",
+  "n_pool_h": 492,
+  "n_168h_nonoverlap": 2,
+  "acf1": 0.783,
+  "acf24": 0.149,
+  "sigma2_LR_b168": 21.47,
+  "sigma2_LR_b72": 14.49,
+  "res_sd_units": 0.517,
+  "ref_missing_frac_full": 0.18,
+  "slope": 0.005234,
+  "intercept": -4.15
+ },
+ "C6H6(GT)": {
+  "sensor": "PT08.S2(NMHC)",
+  "n_pool_h": 510,
+  "n_168h_nonoverlap": 3,
+  "acf1": 0.666,
+  "acf24": 0.455,
+  "sigma2_LR_b168": 2.25,
+  "sigma2_LR_b72": 3.3,
+  "res_sd_units": 1.363,
+  "ref_missing_frac_full": 0.039,
+  "slope": 0.026781,
+  "intercept": -15.124
+ },
+ "NOx(GT)": {
+  "sensor": "PT08.S3(NOx)",
+  "n_pool_h": 488,
+  "n_168h_nonoverlap": 2,
+  "acf1": 0.771,
+  "acf24": 0.459,
+  "sigma2_LR_b168": 19.79,
+  "sigma2_LR_b72": 15.05,
+  "res_sd_units": 47.754,
+  "ref_missing_frac_full": 0.175,
+  "slope": -0.263431,
+  "intercept": 410.929
+ },
+ "NO2(GT)": {
+  "sensor": "PT08.S4(NO2)",
+  "n_pool_h": 488,
+  "n_168h_nonoverlap": 2,
+  "acf1": 0.743,
+  "acf24": 0.434,
+  "sigma2_LR_b168": 11.98,
+  "sigma2_LR_b72": 11.38,
+  "res_sd_units": 18.107,
+  "ref_missing_frac_full": 0.175,
+  "slope": 0.096402,
+  "intercept": -49.962
+ }
+}
